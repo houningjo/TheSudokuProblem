@@ -6,47 +6,61 @@
 //
 
 /** The Square class creats a Square object that represents one square in the
-* sudoku puzzle. 
-*/
+ * sudoku puzzle.
+ */
 
 #include "Square.h"
 #include <iostream>
+#include <stdio.h>
 using namespace std;
 
 // constructors
 /** Default constructor, sets this Square's value to 0 and isEmpty to true.
-*/
+ */
 Square::Square(){
     value = 0;
     isEmpty = true;
+    isFixed = false;
 }
 
 /** Sets the value of this Square to the specified value n.
-* @param n the specified value to be set
-*/
+ * @param n the specified value to be set
+ */
 void Square::setValue(int n){
     value = n;
     isEmpty = false;
 }
 
+/**
+ */
+void Square::setIsFixed(bool target){
+    isFixed = target;
+}
+
+/**
+ */
+bool Square::getIsFixed() const{
+    return isFixed;
+}
 
 /** Returns true if this Square is empty, false otherwise.
-* @return bool true if this Square is empty, false otherwise.
-*/
+ * @return bool true if this Square is empty, false otherwise.
+ */
 bool Square::getIsEmpty() const{
     return isEmpty;
 }
 
 /** Returns the value of this Square.
-* @return the value of this Square. 
-*/
+ * @return the value of this Square.
+ */
 int Square::getValue() const{
     return value;
 }
 
-/** Displays a string representation of this Square object.
-*/
+/** test display
+ */
 void Square::toString() const{
     cout << "The value of this Square is: " << value << endl;
     cout << "This square is empty: " << isEmpty << endl;
 }
+
