@@ -18,7 +18,7 @@ using namespace std;
 /** Default constructor, sets this Square's value to 0 and isEmpty to true.
  */
 Square::Square(){
-    value = 0;
+    value = -1;
     isEmpty = true;
     isFixed = false;
 }
@@ -28,7 +28,12 @@ Square::Square(){
  */
 void Square::setValue(int n){
     value = n;
-    isEmpty = false;
+    if (n == 0) {
+        isEmpty = true;
+    }
+    else{
+        isEmpty = false;
+    }
 }
 
 /**
