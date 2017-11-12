@@ -26,15 +26,15 @@ public:
      */
     void setValue(int n);
     
+    /**
+     */
+    void setIsFixed(bool target);
+    
 //public:
     // constructors
     /** Default constructor, sets this Square's value to 0 and isEmpty to true.
      */
     Square();
-    
-    /**
-     */
-    void setIsFixed(bool target);
     
     /**
      */
