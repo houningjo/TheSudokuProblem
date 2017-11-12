@@ -232,27 +232,35 @@ istream & operator >>(istream& input, Puzzle& thePuzzle){
  */
 ostream& operator <<(ostream& output, Puzzle& thePuzzle){
     string line = "+-----------------------+";
+    string midLine = "|-------+-------+-------|";
     cout << line << endl;
     int rowCounter = 0;
     int colCounter = 0;
+    int midDivCounter = 0;
+    
     for(int row = 0; row < PUZZLE_LENGTH; row++){
         cout << "| ";
         for(int col = 0; col < PUZZLE_LENGTH; col++){
             cout << thePuzzle.puzzleTable[row][col].getValue() << " ";
-            rowCounter++;
-            if(rowCounter == BLOCK_LENGTH){
+            colCounter++;
+            if(colCounter == BLOCK_LENGTH){
                 cout << "| ";
-                rowCounter = 0;
+                colCounter = 0;
             }
         }
         cout << endl;
-        colCounter++;
-        if(colCounter == BLOCK_LENGTH){
-            cout << line << endl;
-            colCounter = 0;
+
+        rowCounter++;
+        if(rowCounter == BLOCK_LENGTH && midDivCounter < BLOCK_LENGTH - 1){
+            cout << midLine << endl;
+            rowCounter = 0;
+            midDivCounter++;
         }
         
+        
     }
+    
+    cout << line << endl;
     
     return output;
 }
