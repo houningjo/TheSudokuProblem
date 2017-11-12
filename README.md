@@ -25,9 +25,13 @@ At a minimum, you must implement the following interface for your Puzzle class:
 
 operator>>() Overload the stream input operator to read puzzles in a compact format. The format consists of a sequence of 81 numerical digits, as ASCII text, each corresponding to the contents of one square in the puzzle grid, in row-major order (i.e., starting at the upper left corner, reading across each row and then continuing with the next row, ending at the bottom right corner). Blank squares are represented with zeros. Your operator should ignore all non-digit characters (i.e., scan the input character by character and use the first 81 ASCII characters in the set {0, 1, ..., 9} found). While you may separate numbers with white space on output, your input operator should not assume that white space separates them (i.e., it should work with an input that consists of only 81 characters). Inputting a puzzle should set all of its component squares' values correctly. Remember that the stream I/O operators are not methods of the Puzzle class!
 get() This method takes two integer arguments ((x,y) location, zero-based) and returns a const reference to the square at that location.
+
 set() This method takes three integer arguments ((x,y) location and value) and attempts to set the value of the square at that location to the given value. It will only succeed if the value proposed is legal for that square (i.e., does not duplicate a value in the same row, column, or block). If set() succeeds, the indicated square's value is updated and this method returns true. If set() fails, it returns false.
+
 operator<<() Your class should also support a "human friendly" display via the stream output operator. We're not going to go to the trouble of producing a graphical user interface, so the display of a puzzle should be formatted text. Output a puzzle as 11 lines of text, with each line containing the numbers in a row of the puzzle separated by single spaces. Use the '|', '+', and '-' characters to separate 3-by-3 blocks (so, each line of output should be 19 printing characters long: 9 digits, 8 spaces, and 2 '|' for "non-divider" lines and 17 '-' and 2 '+' for "divider" lines).
+
 size() This should return the number of variable entries in the puzzle, corresponding to the original size of the puzzle (before any blank squares are filled in).
+
 numEmpty() This method should return the number of empty squares (those without any value).
 Statement of Work
 
