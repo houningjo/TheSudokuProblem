@@ -82,7 +82,8 @@ bool Puzzle::isColumnLegal(int col, int value){
  * @return Square&
  */
 const Square& Puzzle::get(int row, int col){
-
+//    Square* temp;
+//    temp -> puzzleTable[y][x];
     return puzzleTable[row][col];
 }
 
@@ -113,23 +114,22 @@ int Puzzle::numEmpty() const{
  */
 bool Puzzle::isLegal(int row, int col, int value){
     // always legal to set it to 0 unless it's fixed
-    if(puzzleTable[row][col].getIsEmpty() == false){
+    if(puzzleTable[row][col].getIsFixed() == true){
         return false;
     }
     if(value == 0){
         return true;
     }
-    else{
+    //else{
         // calculate the location of the left corner in the current block
         int blockCol = (col / 3) * 3;
         int blockRow = (row / 3) * 3;
-        
         // check row, col, block
         return isRowLegal(row, value)
             && isColumnLegal(col, value)
             && isBlockLegal(blockRow, blockCol, value);
-    }
-    return true;
+    //}
+    //return true;
 }
 
 /** Returns true if sucessfully set the specified value at the
@@ -154,39 +154,69 @@ bool Puzzle::set(int row, int col, int value){
     // if not legal or is a fixed number, set fails
     if(isLegal(row, col, value) == false ||
        puzzleTable[row][col].getIsFixed() == true){
-        cout << "should not get here. " << endl;
+        cout << "either is not legal or is fixed number. " << endl;
         return false;
     }
-    else{
+    //else{
         // update remaining empty squares
-     
-        Square temp;
-        temp = puzzleTable[row][col];
+        // remain number is not updating correctly
 
+    puzzleTable[row][col].setValue(value);
+    
+    if(value == 0){
+        remainVarCount++;
+        puzzleTable[row][col].setIsEmpty(true);
+    }
+    else{
+        remainVarCount--;
+        puzzleTable[row][col].setIsEmpty(false);
+    }
+    
         // if it's reading in a number for the first time
-        if(temp.getValue() == -1 && value == 0){
-
-                remainVarCount++;
-            
-        }
+//        if(temp.getValue() == -1 || value == 0){
+//
+//            puzzleTable[row][col].setValue(value);
+//            if ( value == 0)
+//            {
+//                remainVarCount++;
+//            }
+//            else{
+//                remainVarCount--;
+//            }
+//
+//        }
         // if it's changing values
-        else if(temp.getValue() != -1){
+        /*else if(temp.getValue() != -1){
             // set value from non 0 to 0
             if(value == 0){
-           
+                //cout << "here??" << endl;
                 remainVarCount++;
             }
             else{
                 remainVarCount--;
             }
-        }
+        }*/
         
-        puzzleTable[row][col].setValue(value);
+       // cout << "value: " << value << endl;
+        //puzzleTable[row][col].setValue(value);
         
-    }
+   // }
     
     
     return true;
+}
+
+
+/**
+ */
+void Puzzle::initial(int row, int col, int value){
+
+    puzzleTable[row][col].setValue(value);
+    // update num empty
+    if(value == 0){
+        remainVarCount++;
+    }
+    
 }
 
 /** Reads input from istream and stores it in a 2D array of Squares.
@@ -200,21 +230,27 @@ istream & operator >>(istream& input, Puzzle& thePuzzle){
     for(int row = 0; row < PUZZLE_LENGTH; row++){
         for(int col = 0; col < PUZZLE_LENGTH; col++){
             char temp = input.get();
-
+            if(temp < '0' || temp > '9'){
+                break;
+            }
             if(temp >= '0' && temp <= '9' ){
                 int i = temp - '0';
- 
-                thePuzzle.set(row, col, i);
-            
+
+                thePuzzle.initial(row, col, i);
+                //cout << "i: " << i << endl;
                 // update emptyVarCount
                 if(i == 0){
                     thePuzzle.emptyVarCount++;
+                    thePuzzle.puzzleTable[row][col].setIsEmpty(true);
                     thePuzzle.puzzleTable[row][col].setIsFixed(false);
+                    //cout<< row <<" " <<col <<"is it fixed: " << thePuzzle.puzzleTable[row][col].getIsFixed() << endl;
                 }
                 else{
                 //
                     // set does not work
+                    thePuzzle.puzzleTable[row][col].setIsEmpty(false);
                     thePuzzle.puzzleTable[row][col].setIsFixed(true);
+                    //cout<< row <<" " <<col <<"is it fixed: " << thePuzzle.puzzleTable[row][col].getIsFixed() << endl;
                 }
                 
             }
