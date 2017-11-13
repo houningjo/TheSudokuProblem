@@ -44,7 +44,13 @@ void Square::setIsFixed(bool target){
 
 /**
  */
+void Square::setIsEmpty(bool target){
+    isEmpty = target;
+}
+/**
+ */
 bool Square::getIsFixed() const{
+    cout << "is fixed: " << isFixed << endl;
     return isFixed;
 }
 
@@ -52,6 +58,7 @@ bool Square::getIsFixed() const{
  * @return bool true if this Square is empty, false otherwise.
  */
 bool Square::getIsEmpty() const{
+    //cout << "is empty: " << isEmpty<< endl;
     return isEmpty;
 }
 
