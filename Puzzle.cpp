@@ -31,9 +31,9 @@ Puzzle::Puzzle(){
 bool Puzzle::isBlockLegal(int row, int col, int value){
     for(int i = row; i < row + BLOCK_LENGTH; i++){
         for(int j = col; j < col + BLOCK_LENGTH; j++){
+            
             if(puzzleTable[i][j].getValue() == value){
-                cout << "square value: " << puzzleTable[i][j].getValue() << endl;
-                cout << "block legal value: " << value << endl;
+
                 return false;
             }
         }
@@ -53,6 +53,7 @@ bool Puzzle::isRowLegal(int row, int value){
 
     for(int col = 0; col < PUZZLE_LENGTH; col++){
         if(puzzleTable[row][col].getValue() == value){
+            
             return false;
         }
     }
@@ -69,7 +70,9 @@ bool Puzzle::isRowLegal(int row, int value){
  */
 bool Puzzle::isColumnLegal(int col, int value){
     for(int row = 0; row < PUZZLE_LENGTH; row++){
+        
         if(puzzleTable[row][col].getValue() == value){
+        
             return false;
         }
     }
@@ -79,7 +82,7 @@ bool Puzzle::isColumnLegal(int col, int value){
 /** Returns a const reference to the square at the specified location.
  * @param row the row number
  * @param col the col number
- * @return Square&
+ * @return Square& the reference to the square at the specified location
  */
 const Square& Puzzle::get(int row, int col){
 
@@ -94,7 +97,7 @@ int Puzzle::size() const{
 }
 
 /** Returns the number of empty Squares remains in this Puzzle.
- * @return int the number of empty Squares.
+ * @return int the number of empty Squares remains.
  */
 int Puzzle::numEmpty() const{
     return remainVarCount;
@@ -105,31 +108,29 @@ int Puzzle::numEmpty() const{
  * To calculate the location of the left corner of the current block,
  * blockX = (x / 3) * 3, blockY = (y / 3) * 3.
  * @pre value must be in range from 0 to 9.
- * @param row the row number of the current column
- * @param col the col number of the current row
+ * @param row the row number of the current row
+ * @param col the col number of the current column
  * @param value the specified value
  * @return bool true if the specifed value is not equal to any value
  * in the same row, column, and block, false othewise.
  */
 bool Puzzle::isLegal(int row, int col, int value){
     // always legal to set it to 0 unless it's fixed
-    if(puzzleTable[row][col].getIsEmpty() == false){
+    if(puzzleTable[row][col].getIsFixed() == true){
         return false;
     }
     if(value == 0){
         return true;
     }
-    else{
-        // calculate the location of the left corner in the current block
-        int blockCol = (col / 3) * 3;
-        int blockRow = (row / 3) * 3;
-        
-        // check row, col, block
-        return isRowLegal(row, value)
-            && isColumnLegal(col, value)
-            && isBlockLegal(blockRow, blockCol, value);
-    }
-    return true;
+
+    int blockCol = (col / 3) * 3;
+    int blockRow = (row / 3) * 3;
+    
+    // check row, col, block
+    return isRowLegal(row, value)
+        && isColumnLegal(col, value)
+        && isBlockLegal(blockRow, blockCol, value);
+
 }
 
 /** Returns true if sucessfully set the specified value at the
@@ -151,42 +152,47 @@ bool Puzzle::set(int row, int col, int value){
     if(value < 0 || value > 9){
         throw out_of_range("value is out of range.");
     }
+
     // if not legal or is a fixed number, set fails
     if(isLegal(row, col, value) == false ||
        puzzleTable[row][col].getIsFixed() == true){
-        cout << "should not get here. " << endl;
+
         return false;
     }
+
+    // set value
+    puzzleTable[row][col].setValue(value);
+    
+    // update remaining empty squares and isEmpty flag
+    if(value == 0){
+        remainVarCount++;
+        puzzleTable[row][col].setIsEmpty(true);
+    }
     else{
-        // update remaining empty squares
-     
-        Square temp;
-        temp = puzzleTable[row][col];
-
-        // if it's reading in a number for the first time
-        if(temp.getValue() == -1 && value == 0){
-
-                remainVarCount++;
-            
-        }
-        // if it's changing values
-        else if(temp.getValue() != -1){
-            // set value from non 0 to 0
-            if(value == 0){
-           
-                remainVarCount++;
-            }
-            else{
-                remainVarCount--;
-            }
-        }
-        
-        puzzleTable[row][col].setValue(value);
-        
+        remainVarCount--;
+        puzzleTable[row][col].setIsEmpty(false);
     }
     
-    
     return true;
+}
+
+
+/** Sets the specified value at the specified location.
+ * Only used when reading input.
+ * @param row the row number of the specified location
+ * @param col the column number of the specified location
+ * @param value the specified value
+ */
+void Puzzle::initial(int row, int col, int value){
+    
+    // set value
+    puzzleTable[row][col].setValue(value);
+    
+    // update remaining emppty squares
+    if(value == 0){
+        remainVarCount++;
+    }
+    
 }
 
 /** Reads input from istream and stores it in a 2D array of Squares.
@@ -196,29 +202,31 @@ bool Puzzle::set(int row, int col, int value){
  */
 istream & operator >>(istream& input, Puzzle& thePuzzle){
     
-    // input can't ignore non digit - bug
+    // input can't ignore non digit
     for(int row = 0; row < PUZZLE_LENGTH; row++){
         for(int col = 0; col < PUZZLE_LENGTH; col++){
+            
             char temp = input.get();
-
+            if(temp < '0' || temp > '9'){
+                break;
+            }
             if(temp >= '0' && temp <= '9' ){
                 int i = temp - '0';
- 
-                thePuzzle.set(row, col, i);
-            
-                // update emptyVarCount
+                
+                // set initial value in 2D array
+                thePuzzle.initial(row, col, i);
+                
+                // updates empty suqare counts and flags
                 if(i == 0){
                     thePuzzle.emptyVarCount++;
-                    thePuzzle.puzzleTable[row][col].setIsFixed(false);
+                    thePuzzle.puzzleTable[row][col].setIsEmpty(true);
+                    thePuzzle.puzzleTable[row][col].setIsFixed(false);   
                 }
                 else{
-                //
-                    // set does not work
+                    thePuzzle.puzzleTable[row][col].setIsEmpty(false);
                     thePuzzle.puzzleTable[row][col].setIsFixed(true);
-                }
-                
+                }    
             }
-
         }
     }
 
@@ -233,33 +241,42 @@ istream & operator >>(istream& input, Puzzle& thePuzzle){
 ostream& operator <<(ostream& output, Puzzle& thePuzzle){
     string line = "+-----------------------+";
     string midLine = "|-------+-------+-------|";
+
+    // output boarder line
     cout << line << endl;
-    int rowCounter = 0;
-    int colCounter = 0;
-    int midDivCounter = 0;
+
+    int rowCounter = 0;    // midLine counter
+    int colCounter = 0;    // "|" counter
+    int midDivCounter = 0; // maximum 3 - 1, decides when to output midline
     
     for(int row = 0; row < PUZZLE_LENGTH; row++){
+
         cout << "| ";
+        
         for(int col = 0; col < PUZZLE_LENGTH; col++){
+            
             cout << thePuzzle.puzzleTable[row][col].getValue() << " ";
             colCounter++;
+            
+            // output "|"
             if(colCounter == BLOCK_LENGTH){
                 cout << "| ";
                 colCounter = 0;
             }
         }
-        cout << endl;
 
+        cout << endl;
+        
+        // output midline
         rowCounter++;
         if(rowCounter == BLOCK_LENGTH && midDivCounter < BLOCK_LENGTH - 1){
             cout << midLine << endl;
             rowCounter = 0;
             midDivCounter++;
-        }
-        
-        
+        }        
     }
     
+    // output boarder line
     cout << line << endl;
     
     return output;

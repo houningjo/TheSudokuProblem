@@ -18,23 +18,29 @@ private:
     int value = 0;
     bool isEmpty = true;
     bool isFixed = false;
+    friend class Puzzle;
 
-public:
-//protected:
+protected:
     /** Sets the value of this Square to the specified value n.
      * @param n the specified value to be set
      */
     void setValue(int n);
-    
-    /**
-     */
-    void setIsFixed(bool target);
-    
-//public:
+
+public: 
     // constructors
     /** Default constructor, sets this Square's value to 0 and isEmpty to true.
      */
     Square();
+
+    /** Sets the flag of it is fixed to the specified value target.
+     * @param target the specified value
+     */
+    void setIsFixed(bool target);
+    
+    /** Sets the flag of it is empty to the specified value target.
+     * @param target the specified value
+     */
+    void setIsEmpty(bool target);
     
     /**
      */
@@ -50,7 +56,7 @@ public:
      */
     int getValue() const;
     
-    /** display
+    /** display a string representation of this Square.
      */
     void toString() const;
 };

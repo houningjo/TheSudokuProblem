@@ -25,7 +25,6 @@ private:
     Square puzzleTable[PUZZLE_LENGTH][PUZZLE_LENGTH];
     int emptyVarCount;    // number of empty variables after reading in an input
     int remainVarCount;    // number of empty variables remains
-    //friend Square;
     
 public:
     Puzzle();
@@ -65,7 +64,7 @@ public:
     /** Returns a const reference to the square at the specified location.
      * @param row the row number
      * @param col the column number
-     * @return Square&
+     * @return Square& the reference to the square at the specified location
      */
     const Square& get(int row, int col);
     
@@ -75,7 +74,7 @@ public:
     int size() const;
     
     /** Returns the number of empty Squares remains in this Puzzle.
-     * @return int the number of empty Squares.
+     * @return int the number of empty Squares remains.
      */
     int numEmpty() const;
     
@@ -84,8 +83,8 @@ public:
      * To calculate the location of the left corner of the current block,
      * blockX = (x / 3) * 3, blockY = (y / 3) * 3.
      * @pre value must be in range from 0 to 9.
-     * @param row the row number of the current column
-     * @param col the col number of the current row
+     * @param row the row number of the current row
+     * @param col the col number of the current column
      * @param value the specified value
      * @return bool true if the specifed value is not equal to any value
      * in the same row, column, and block, false othewise.
@@ -104,6 +103,14 @@ public:
      * the specified location, false otherwise
      */
     bool set(int row, int col, int value);
+
+    /** Sets the specified value at the specified location.
+     * Only used when reading input.
+     * @param row the row number of the specified location
+     * @param col the column number of the specified location
+     * @param value the specified value
+     */
+    void initial(int row, int col, int value);
 
     /** Reads input from istream and stores it in a 2D array of Squares.
      * @param input an istream input reference
