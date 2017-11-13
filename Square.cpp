@@ -36,13 +36,15 @@ void Square::setValue(int n){
     }
 }
 
-/**
+/** Sets the flag of it is fixed to the specified value target.
+ * @param target the specified value
  */
 void Square::setIsFixed(bool target){
     isFixed = target;
 }
 
-/**
+/** Sets the flag of it is empty to the specified value target.
+ * @param target the specified value
  */
 void Square::setIsEmpty(bool target){
     isEmpty = target;
@@ -50,7 +52,6 @@ void Square::setIsEmpty(bool target){
 /**
  */
 bool Square::getIsFixed() const{
-    cout << "is fixed: " << isFixed << endl;
     return isFixed;
 }
 
@@ -58,7 +59,6 @@ bool Square::getIsFixed() const{
  * @return bool true if this Square is empty, false otherwise.
  */
 bool Square::getIsEmpty() const{
-    //cout << "is empty: " << isEmpty<< endl;
     return isEmpty;
 }
 
@@ -69,7 +69,7 @@ int Square::getValue() const{
     return value;
 }
 
-/** test display
+/** display a string representation of this Square.
  */
 void Square::toString() const{
     cout << "The value of this Square is: " << value << endl;
