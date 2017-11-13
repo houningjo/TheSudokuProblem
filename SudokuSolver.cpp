@@ -31,12 +31,11 @@ bool solve(int row, int col, Puzzle& thePuzzle){
                 break;
             }
             
-       }
+        }
         if(breakFromLoop){
             break;
         }
-        cout << "next row: " << row << endl;
-        cout << "next col: " << col << endl;
+
     }
 
     // for each value from 1 to 9,
