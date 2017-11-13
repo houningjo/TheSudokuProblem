@@ -110,6 +110,11 @@ public:
      * @param thePuzzle reference of this Puzzle
      * @return istream& the processed istream
      */
+    
+    /**
+     */
+    void initial(int row, int col, int value);
+    
     friend istream & operator >>(istream& input, Puzzle& thePuzzle);
 
     /** Returns a string representation of the Puzzle.
