@@ -18,6 +18,7 @@ private:
     int value = 0;
     bool isEmpty = true;
     bool isFixed = false;
+    friend class Puzzle;
 
 public:
 //protected:
@@ -29,6 +30,10 @@ public:
     /**
      */
     void setIsFixed(bool target);
+    
+    /**
+     */
+    void setIsEmpty(bool target);
     
 //public:
     // constructors
