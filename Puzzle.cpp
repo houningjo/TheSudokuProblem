@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <iostream>
+#include <cctype>
 #include "Puzzle.h"
 using namespace std;
 
@@ -199,33 +200,34 @@ void Puzzle::initial(int row, int col, int value){
  * @param input an istream input reference
  * @param thePuzzle reference of this Puzzle
  * @return istream& the processed istream
- */
 istream & operator >>(istream& input, Puzzle& thePuzzle){
+ 
+    char c;
     
-    // input can't ignore non digit
     for(int row = 0; row < PUZZLE_LENGTH; row++){
         for(int col = 0; col < PUZZLE_LENGTH; col++){
+            c = input.get();
             
-            char temp = input.get();
-            if(temp < '0' || temp > '9'){
-                break;
+            // assign digits in puzzle
+            if(isdigit(c)){
+                thePuzzle.initial(row, col, c - '0');
             }
-            if(temp >= '0' && temp <= '9' ){
-                int i = temp - '0';
-                
-                // set initial value in 2D array
-                thePuzzle.initial(row, col, i);
-                
-                // updates empty suqare counts and flags
-                if(i == 0){
-                    thePuzzle.emptyVarCount++;
-                    thePuzzle.puzzleTable[row][col].setIsEmpty(true);
-                    thePuzzle.puzzleTable[row][col].setIsFixed(false);   
-                }
-                else{
-                    thePuzzle.puzzleTable[row][col].setIsEmpty(false);
-                    thePuzzle.puzzleTable[row][col].setIsFixed(true);
-                }    
+            else{
+                col--;
+            }
+
+            // update emptyVarCount(size), isEmpty, isFixed
+            if(c - '0' == 0){
+                thePuzzle.emptyVarCount++;
+                thePuzzle.puzzleTable[row][col].setIsEmpty(true);
+                thePuzzle.puzzleTable[row][col].setIsFixed(false);
+
+            }
+            else{
+
+                thePuzzle.puzzleTable[row][col].setIsEmpty(false);
+                thePuzzle.puzzleTable[row][col].setIsFixed(true);
+
             }
         }
     }
