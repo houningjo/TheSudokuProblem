@@ -26,9 +26,6 @@ private:
     int emptyVarCount;    // number of empty variables after reading in an input
     int remainVarCount;    // number of empty variables remains
     
-public:
-    Puzzle();
-    
     /** Returns true if the specified value is not equal to any
      * value in the current block, false otherwise.
      * (row, col) is the location of the left corner of the current Block.
@@ -60,6 +57,9 @@ public:
      * in the current column, false otherwise
      */
     bool isColumnLegal(int col, int value);
+ 
+public:
+    Puzzle();
     
     /** Returns a const reference to the square at the specified location.
      * @param row the row number
