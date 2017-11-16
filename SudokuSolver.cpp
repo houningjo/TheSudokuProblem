@@ -63,12 +63,16 @@ bool solve(int row, int col, Puzzle& thePuzzle){
 
 int main(){
     
-    Puzzle b;
-    cin >> b;
-    if(solve(0, 0, b) == true){
+    Puzzle p;
+    cin >> p;
+    cout << "You've enter the following puzzle: ";
+    cout << endl;
+    cout << p;
+    
+    if(solve(0, 0, p) == true){
 
         cout << "Solved Sudoku: " << endl;
-        cout << b;
+        cout << p;
     }
     else{
         cout << "Unable to solve this Sudoku." << endl;
